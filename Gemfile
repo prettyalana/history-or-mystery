@@ -57,6 +57,15 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "draft_generators"
+  gem "pry-rails"
+  gem "rails_db"
+  gem "rails-erd"
+  gem "rufo"
+  gem "specs_to_readme"
+  gem "web_git"
 end
 
 group :test do
