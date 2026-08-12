@@ -2,7 +2,7 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
-    after_action :authenticate
+    before_action :authenticate
   end
 
   private

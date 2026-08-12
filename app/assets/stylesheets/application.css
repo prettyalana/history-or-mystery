@@ -9,11 +9,81 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- @font-face {
+@font-face {
   font-family: "Budmo Jiggler";
   src: url("BudmoJiggler.TTF") format("truetype");
 }
 
 .game-title {
   font-family: "Budmo Jiggler", sans-serif;
+  text-align: center;
+  font-size: clamp(3rem, 8vw, 100px);
+}
+
+p {
+  text-align: center;
+}
+
+.home-page {
+  position: relative;
+  /* width: 100%;
+  height: 100%; */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.home-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-wrapper
+{
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    /* width: 100%; */
+}
+
+input {
+  width: 100%;
+  height: 3rem;
+}
+
+@media (max-width: 700px) {
+  .home-content {
+    height: 100vh;
+  }
+
+  .form-wrapper {
+    gap: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+  }
+
+  .join-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -15,7 +15,7 @@ class RoomsController < ApplicationController
           seat: "a",
         )
         cookies.encrypted[:auth_token] = player.token
-        format.html { redirect_to @room, notice: "room was successfully created." }
+        format.html { redirect_to @room, notice: "Room #{@room.code} was successfully created." }
         format.json { render :show, status: :created, location: @room }
       else
         format.html { render :show, status: :unprocessable_entity }
