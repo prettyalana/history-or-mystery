@@ -71,3 +71,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "awesome_print"
+gem "dotenv-rails"
+gem "faker"
+gem "htmlbeautifier"
+gem "http"
+gem "table_print"

@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_12_005040) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_145545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "cards", force: :cascade do |t|
     t.string "category", null: false
-    t.string "clue", null: false
     t.datetime "created_at", null: false
     t.text "fact", null: false
     t.string "title", null: false
@@ -38,6 +37,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_005040) do
 
   create_table "rooms", force: :cascade do |t|
     t.boolean "clue_revealed"
+    t.text "clue_text"
     t.string "code"
     t.datetime "created_at", null: false
     t.bigint "current_card_id"
