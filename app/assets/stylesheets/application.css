@@ -8,3 +8,12 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ @font-face {
+  font-family: "Budmo Jiggler";
+  src: url("BudmoJiggler.TTF") format("truetype");
+}
+
+.game-title {
+  font-family: "Budmo Jiggler", sans-serif;
+}

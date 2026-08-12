@@ -1,6 +1,6 @@
-require 'net/http'
-require 'json'
-require 'cgi'
+require "net/http"
+require "json"
+require "cgi"
 
 desc "Fill the database tables with fun facts"
 task({ generate_facts: :environment }) do
@@ -21,5 +21,5 @@ task({ generate_facts: :environment }) do
   end
 
   p "Created #{Card.count} cards."
-
+  p "#{starting}."
 end

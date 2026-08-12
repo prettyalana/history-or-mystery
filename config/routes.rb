@@ -11,4 +11,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "home#show"
+
+  get "/home" => "home#show"
+
+  post "join" => "rooms#join"
+
+  resources :rooms, only:  [ :show, :create ], param: :code
 end

@@ -3,4 +3,8 @@ class Room < ApplicationRecord
   belongs_to :drawer_player, class_name: "Player", optional: true
   belongs_to :guesser_player, class_name: "Player", optional: true
   has_many :players
+
+  def to_param
+    code
+  end
 end

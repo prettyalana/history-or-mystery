@@ -1,36 +1,54 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: %i[ show edit update destroy ]
-  # before_action :ensure_current_user_is_buyer, only: [:destroy, :update, :edit]
-
-
+  before_action :set_room, only: %i[ show ]
   # GET /rooms/1 or /rooms/1.json
   def show
   end
 
   # POST /rooms or /rooms.json
   def create
-    @room = Room.new(room_params)
-    @room.code = Room.code
-
+    @room = Room.new
+    @room.code = SecureRandom.alphanumeric(4).upcase
     respond_to do |format|
       if @room.save
+        player = @room.players.create!(
+          name: params[:name],
+          seat: "a",
+        )
+        cookies.encrypted[:auth_token] = player.token
         format.html { redirect_to @room, notice: "room was successfully created." }
         format.json { render :show, status: :created, location: @room }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity }
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_room
-      @room = Room.find(params[:id])
+  def join
+    # Room lookup
+    room = Room.find_by(code: params[:code])
+    if room.nil?
+      redirect_to root_path, alert: "this room does not exist"
+      return
     end
 
-    # Only allow a list of trusted parameters through.
-    def room_params
-      params.require(:room).permit()
+    if room.players.count == 2
+      redirect_to root_path, alert: "room is full"
+      return
     end
+
+    player = room.players.create!(
+      name: params[:name],
+      seat: "b",
+    )
+    cookies.encrypted[:auth_token] = player.token
+    redirect_to room, notice: "you successfully joined room"
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_room
+    @room = Room.find_by!(code: params[:code])
+  end
 end
