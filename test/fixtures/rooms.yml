@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  status: MyString
+  current_card_id: one
+  drawer_player_id: one
+  guesser_player_id: one
+  round_started_at: 2026-08-11 19:25:48
+  clue_revealed: false
+  round_status: MyString
+  used_card_ids: 1
+
+two:
+  code: MyString
+  status: MyString
+  current_card_id: two
+  drawer_player_id: two
+  guesser_player_id: two
+  round_started_at: 2026-08-11 19:25:48
+  clue_revealed: false
+  round_status: MyString
+  used_card_ids: 1
