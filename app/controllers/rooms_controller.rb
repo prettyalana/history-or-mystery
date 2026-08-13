@@ -46,6 +46,7 @@ class RoomsController < ApplicationController
       seat: "b",
     )
     cookies.encrypted[:auth_token] = player.token
+    broadcast_room_update(room)
     redirect_to room, notice: "You successfully joined room #{room.code}"
   end
 
@@ -54,6 +55,7 @@ class RoomsController < ApplicationController
       @room.update(
         round_status: "finished",
       )
+      broadcast_room_update(@room)
       redirect_to @room
       return
     end
@@ -79,6 +81,7 @@ class RoomsController < ApplicationController
       clue_revealed: false,
     )
 
+    broadcast_room_update(@room)
     redirect_to @room
   end
 
@@ -88,11 +91,13 @@ class RoomsController < ApplicationController
         clue_revealed: true,
       )
     end
+    broadcast_room_update(@room)
     redirect_to @room
   end
 
   def submit_clue
     if @room.clue_text.present?
+      broadcast_room_update(@room)
       redirect_to @room, alert: "You can only submit one clue per round"
       return
     end
@@ -102,13 +107,14 @@ class RoomsController < ApplicationController
         clue_text: params[:clue],
       )
     end
+    broadcast_room_update(@room)
     redirect_to @room
   end
 
   def resolve_round
     if params[:outcome] == "won"
       @room.update(
-        round_status: "won"
+        round_status: "won",
       )
       player_score = @room.guesser_player.score += 1
       @room.guesser_player.update(
@@ -116,9 +122,10 @@ class RoomsController < ApplicationController
       )
     elsif params[:outcome] == "forfeit"
       @room.update(
-        round_status: "forfeited"
+        round_status: "forfeited",
       )
     end
+    broadcast_room_update(@room)
     redirect_to @room
   end
 
@@ -127,5 +134,16 @@ class RoomsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_room
     @room = Room.find_by!(code: params[:code])
+  end
+
+  def broadcast_room_update(room)
+    room.players.each do |player|
+      Turbo::StreamsChannel.broadcast_replace_to(
+        "room_#{room.code}_seat_#{player.seat}",
+        target: "room-content",
+        partial: "rooms/gameplay",
+        locals: { room: room, viewer: player },
+      )
+    end
   end
 end

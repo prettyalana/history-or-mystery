@@ -1,0 +1,40 @@
+<% if room.players.count < 2 %>
+  <h1> Room code: <%= room.code %> </h1>
+<% elsif room.players.count == 2 && room.round_status.blank? %>
+  <%= form_with url: start_round_path(room), method: :post do %>
+    <button>Start game</button>
+  <% end %>
+<% elsif room.round_status == "active" %>
+  <p>Game started</p>
+  <%= render "cards/card", room: room, viewer: viewer %>
+  <% if viewer == room.drawer_player %>
+    <% if room.clue_revealed == true && room.clue_text.blank? %>
+      <%= form_with url: submit_clue_path(room), method: :post do |f| %>
+        <%= f.text_field :clue, placeholder: "Clue" %>
+        <%= f.submit "Reveal clue" %>
+      <% end %>
+    <% end %>
+    <%= button_to "Correct!", resolve_round_path(room), method: :post, params: { outcome: "won" } %>
+  <% elsif viewer == room.guesser_player %>
+    <% if room.clue_revealed == false %>
+      <%= form_with url: request_clue_path(room), method: :post do %>
+        <button>Clued in 🔎</button>
+      <% end %>
+    <% else %>
+      <%= render "cards/clue", room: room, viewer: viewer %>
+    <% end %>
+    <%= button_to "Forfeit", resolve_round_path(room), method: :post, params: { outcome: "forfeit" } %>
+  <% end %>
+<% elsif room.round_status == "won" %>
+  <p>You Win!</p>
+  <h5 class="card-title">
+    Correct! It was: <%= room.current_card.title %>
+  </h5>
+  <%= link_to "Main menu", root_path %>
+<% elsif room.round_status == "finished" || room.round_status == "forfeited" %>
+  <p>Game over</p>
+  <h5 class="card-title">
+    The correct answer was: <%= room.current_card.title %>
+  </h5>
+  <%= link_to "Main menu", root_path %>
+<% end %>

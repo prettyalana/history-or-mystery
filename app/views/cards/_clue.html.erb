@@ -1,8 +1,8 @@
 <div class="clue">
-  <% if Current.player == @room.guesser_player %>
+  <% if viewer == room.guesser_player %>
     <p class="clue-text">
-      <% if @room.clue_text.present? %>
-        <%= @room.clue_text %>
+      <% if room.clue_text.present? %>
+        <%= room.clue_text %>
       <% else %>
         Waiting for the drawer...
       <% end %>
