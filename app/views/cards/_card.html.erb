@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-category">
+      <%= @room.current_card.category %>
+    </h5>
+  </div>
+  <% if Current.player == @room.drawer_player %>
+    <h5 class="card-title">
+      Correct answer: <%= @room.current_card.title %>
+    </h5>
+    <p class="card-text">
+      <%= @room.current_card.fact %>
+    </p>
+  <% end %>
+</div>

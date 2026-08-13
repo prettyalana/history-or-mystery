@@ -1,25 +1,30 @@
 require "net/http"
 require "json"
 require "cgi"
+require "nokogiri"
 
 desc "Fill the database tables with fun facts"
 task({ generate_facts: :environment }) do
   p "Creating fun facts"
   starting = Time.now
 
-  uri = URI("https://opentdb.com/api.php?amount=50")
+  if Rails.env.development?
+    Card.destroy_all
+    p "Database wiped"
+  end
+
+  uri = URI("https://opentdb.com/api.php?amount=50&type=multiple")
   response = Net::HTTP.get(uri)
   data = JSON.parse(response)
 
   # Create cards
   data["results"].each do |card|
     Card.create!(
-      category: CGI.unescapeHTML(card["category"]),
-      title: CGI.unescapeHTML(card["correct_answer"]),
-      fact: CGI.unescapeHTML(card["question"]),
+      category: Nokogiri::HTML.fragment(card["category"]).text,
+      title: Nokogiri::HTML.fragment(card["correct_answer"]).text,
+      fact: Nokogiri::HTML.fragment(card["question"]).text,
     )
   end
-
   p "Created #{Card.count} cards."
   p "#{starting}."
 end

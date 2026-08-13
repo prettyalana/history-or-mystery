@@ -20,6 +20,10 @@
   font-size: clamp(3rem, 8vw, 100px);
 }
 
+.game-title:hover{
+  text-shadow: 0 0 10px #fbfcfc;
+}
+
 h1, p {
   text-align: center;
 }
@@ -54,14 +58,14 @@ h1, p {
   height: 100vh;
 }
 
-.form-wrapper
+/* .form-wrapper
 {
-    /* display: flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; */
-    /* width: 100%; */
-}
+    align-items: center;
+    width: 100%;
+} */
 
 input {
   width: 100%;
