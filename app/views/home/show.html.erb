@@ -9,18 +9,23 @@
       ) %>
   <div class="home-content">
     <h1 class="game-title">History or Mystery?</h1>
-    <div class="form-wrapper">
-      <%= form_with url: rooms_path, method: :post do |f| %>
-        <%= f.text_field :name, placeholder: "Your name" %>
-        <%= f.submit "Create Room" %>
-      <% end %>
-      <div class="join-wrapper">
-        <%= form_with url: join_path, method: :post do |f| %>
-          <%= f.text_field :code, placeholder: "Room code" %>
+    <% if @active_room %>
+      <h1>You already created a room</h1>
+      <%= link_to "Rejoin room #{@active_room.code}", @active_room %>
+    <% else %>
+      <div class="form-wrapper">
+        <%= form_with url: rooms_path, method: :post do |f| %>
           <%= f.text_field :name, placeholder: "Your name" %>
-          <%= f.submit "Join Room" %>
+          <%= f.submit "Create Room" %>
         <% end %>
+        <div class="join-wrapper">
+          <%= form_with url: join_path, method: :post do |f| %>
+            <%= f.text_field :code, placeholder: "Room code" %>
+            <%= f.text_field :name, placeholder: "Your name" %>
+            <%= f.submit "Join Room" %>
+          <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

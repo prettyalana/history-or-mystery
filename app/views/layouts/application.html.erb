@@ -8,21 +8,20 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
+    <link rel="icon" href="<%= asset_path('favicon/favicon.ico') %>" type="image/x-icon">
+    <link rel="icon" href="<%= asset_path('favicon/favicon.svg') %>" type="image/svg+xml">
+    <link rel="icon" href="<%= asset_path('favicon/favicon-96x96.png') %>" sizes="96x96" type="image/png">
+    <link rel="apple-touch-icon" href="<%= asset_path('favicon/apple-touch-icon.png') %>">
+    <link rel="icon" href="<%= asset_path('favicon/web-app-manifest-192x192.png') %>" sizes="192x192" type="image/png">
+    <link rel="icon" href="<%= asset_path('favicon/web-app-manifest-512x512.png') %>" sizes="512x512" type="image/png">
+    <link rel="manifest" href="<%= asset_path('favicon/site.webmanifest.erb') %>">
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
     <%= yield %>
   </body>

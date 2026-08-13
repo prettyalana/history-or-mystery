@@ -1,7 +1,6 @@
 class HomeController < ApplicationController
-  before_action :check_room_code
-
   def show
+    @active_room = Current.player&.room
   end
 
   private

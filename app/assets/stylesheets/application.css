@@ -20,7 +20,7 @@
   font-size: clamp(3rem, 8vw, 100px);
 }
 
-p {
+h1, p {
   text-align: center;
 }
 
@@ -51,6 +51,7 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .form-wrapper
@@ -67,7 +68,7 @@ input {
   height: 3rem;
 }
 
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   .home-content {
     height: 100vh;
   }
@@ -76,8 +77,6 @@ input {
     gap: 1.25rem;
     display: flex;
     flex-direction: column;
-    /* justify-content: center;
-    align-items: center; */
   }
 
   .join-wrapper {
@@ -86,4 +85,4 @@ input {
     justify-content: center;
     align-items: center;
   }
-}
+} */

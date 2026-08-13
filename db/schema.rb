@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_12_145545) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_212434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_145545) do
     t.bigint "current_card_id"
     t.bigint "drawer_player_id"
     t.bigint "guesser_player_id"
+    t.integer "round_number", default: 0
     t.datetime "round_started_at"
     t.string "round_status"
     t.string "status"

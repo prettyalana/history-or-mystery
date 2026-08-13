@@ -17,5 +17,9 @@ Rails.application.routes.draw do
 
   post "join" => "rooms#join"
 
-  resources :rooms, only:  [ :show, :create ], param: :code
+  resources :rooms, only: [:show, :create], param: :code
+
+  post "rooms/:code/start_round" => "rooms#start_round", as: :start_round
+  post "rooms/:code/submit_clue" => "rooms#submit_clue", as: :submit_clue
+  post "rooms/:code/resolve_round" => "rooms#resolve_round", as: :resolve_round
 end
