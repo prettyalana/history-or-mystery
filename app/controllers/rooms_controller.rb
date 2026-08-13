@@ -1,9 +1,9 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: %i[ show start_round submit_clue resolve_round ]
+  before_action :set_room, only: %i[ show start_round request_clue submit_clue resolve_round ]
   # GET /rooms/1 or /rooms/1.json
   def show
     # If the game is done clear browser cookies
-    if @room.round_status == "finished"
+    if @room.round_status == "finished" || @room.round_status == "forfeited"
       cookies.delete(:auth_token)
     end
   end
@@ -50,15 +50,12 @@ class RoomsController < ApplicationController
   end
 
   def start_round
-
     if @room.round_number >= 3
       @room.update(
-        round_status: "finished"
+        round_status: "finished",
       )
       redirect_to @room
       return
-
-      # Display Game complete, the score, and a link to the main menu to start a new game
     end
 
     random_card = Card.where.not(id: @room.used_card_ids).sample
@@ -66,34 +63,63 @@ class RoomsController < ApplicationController
     if @room.drawer_player.nil?
       drawer_player, guesser_player = @room.players.shuffle
     else
-      drawer_player = @room.drawer_player
-      guesser_player = @room.guesser_player
+      drawer_player = @room.guesser_player
+      guesser_player = @room.drawer_player
     end
 
     @room.update!(
       drawer_player: drawer_player,
       guesser_player: guesser_player,
       current_card_id: random_card.id,
-      used_card_ids: @room.used_card_ids + [random_card.id],
+      used_card_ids: @room.used_card_ids + [ random_card.id ],
       round_number: @room.round_number + 1,
       round_started_at: Time.current,
       round_status: "active",
       clue_text: nil,
+      clue_revealed: false,
     )
 
     redirect_to @room
   end
 
-  def submit_clue
-    if Current.player == @room.drawer_player
+  def request_clue
+    if Current.player == @room.guesser_player
       @room.update(
-        clue_text: params[:clue]
+        clue_revealed: true,
+      )
+    end
+    redirect_to @room
+  end
+
+  def submit_clue
+    if @room.clue_text.present?
+      redirect_to @room, alert: "You can only submit one clue per round"
+      return
+    end
+
+    if Current.player == @room.drawer_player && @room.clue_revealed == true
+      @room.update(
+        clue_text: params[:clue],
       )
     end
     redirect_to @room
   end
 
   def resolve_round
+    if params[:outcome] == "won"
+      @room.update(
+        round_status: "won"
+      )
+      player_score = @room.guesser_player.score += 1
+      @room.guesser_player.update(
+        score: player_score,
+      )
+    elsif params[:outcome] == "forfeit"
+      @room.update(
+        round_status: "forfeited"
+      )
+    end
+    redirect_to @room
   end
 
   private
