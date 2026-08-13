@@ -7,7 +7,6 @@
       <button>Start game</button>
     <% end %>
   <% elsif @room.round_status == "active" %>
-    <%# # flash notice  %>
     <p>Game started</p>
     <%= render "cards/card" %>
     <% if Current.player == @room.drawer_player %>
@@ -21,7 +20,7 @@
     <% elsif Current.player == @room.guesser_player %>
       <%if @room.clue_revealed == false %>
         <%= form_with url: request_clue_path(@room), method: :post do %>
-          <button>Clued in</button>
+          <button>Clued in 🔎</button>
         <% end %>
       <% else %>
         <%= render "cards/clue" %>
@@ -29,14 +28,16 @@
       <%= button_to "Forfeit", resolve_round_path(@room), method: :post, params: { outcome: "forfeit" } %>
     <% end %>
   <% elsif @room.round_status == "won" %>
-    <p>won</p>
+    <p>You Win!</p>
     <h5 class="card-title">
       Correct! It was: <%= @room.current_card.title %>
     </h5>
+    <%= link_to "Main menu", root_path%>
   <% elsif @room.round_status == "finished" ||  @room.round_status == "forfeited" %>
-    <p>game over</p>
+    <p>Game over</p>
     <h5 class="card-title">
       The correct answer was: <%= @room.current_card.title %>
     </h5>
+    <%= link_to "Main menu", root_path%>
   <% end %>
 </div>

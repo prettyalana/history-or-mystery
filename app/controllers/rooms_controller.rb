@@ -46,7 +46,7 @@ class RoomsController < ApplicationController
       seat: "b",
     )
     cookies.encrypted[:auth_token] = player.token
-    redirect_to room, notice: "You successfully joined room #{@room.code}"
+    redirect_to room, notice: "You successfully joined room #{room.code}"
   end
 
   def start_round
