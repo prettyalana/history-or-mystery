@@ -93,15 +93,12 @@ input {
 .card-category {
   margin: 0 0 1.5rem;
   text-align: center;
-  font-size: 0.9rem;
   letter-spacing: 0.15rem;
 }
 
 .card-title {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 0 0 2rem;
   text-align: center;
 }
 
@@ -117,5 +114,5 @@ input {
 .card-text {
   margin: 0;
   line-height: 1.7;
-  text-align: left;
+  text-align: center;
 }

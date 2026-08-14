@@ -51,35 +51,9 @@ class RoomsController < ApplicationController
   end
 
   def start_round
-    if @room.round_number >= 3
-      @room.update(
-        round_status: "finished",
-      )
-      broadcast_room_update(@room)
-      redirect_to @room
-      return
-    end
+    flash[:notice] = "Game started"
 
-    random_card = Card.where.not(id: @room.used_card_ids).sample
-
-    if @room.drawer_player.nil?
-      drawer_player, guesser_player = @room.players.shuffle
-    else
-      drawer_player = @room.guesser_player
-      guesser_player = @room.drawer_player
-    end
-
-    @room.update!(
-      drawer_player: drawer_player,
-      guesser_player: guesser_player,
-      current_card_id: random_card.id,
-      used_card_ids: @room.used_card_ids + [ random_card.id ],
-      round_number: @room.round_number + 1,
-      round_started_at: Time.current,
-      round_status: "active",
-      clue_text: nil,
-      clue_revealed: false,
-    )
+    game_play
 
     broadcast_room_update(@room)
     redirect_to @room
@@ -113,6 +87,7 @@ class RoomsController < ApplicationController
 
   def resolve_round
     if params[:outcome] == "won"
+      flash[:notice] = "You win!"
       @room.update(
         round_status: "won",
       )
@@ -120,7 +95,9 @@ class RoomsController < ApplicationController
       @room.guesser_player.update(
         score: player_score,
       )
+      game_play
     elsif params[:outcome] == "forfeit"
+      flash[:notice] = "Game over"
       @room.update(
         round_status: "forfeited",
       )
@@ -134,6 +111,36 @@ class RoomsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_room
     @room = Room.find_by!(code: params[:code])
+  end
+
+  def game_play
+    if @room.round_number >= 3
+      @room.update(
+        round_status: "finished",
+      )
+      return
+    end
+
+    random_card = Card.where.not(id: @room.used_card_ids).sample
+
+    if @room.drawer_player.nil?
+      drawer_player, guesser_player = @room.players.shuffle
+    else
+      drawer_player = @room.guesser_player
+      guesser_player = @room.drawer_player
+    end
+
+    @room.update!(
+      drawer_player: drawer_player,
+      guesser_player: guesser_player,
+      current_card_id: random_card.id,
+      used_card_ids: @room.used_card_ids + [random_card.id],
+      round_number: @room.round_number + 1,
+      round_started_at: Time.current,
+      round_status: "active",
+      clue_text: nil,
+      clue_revealed: false,
+    )
   end
 
   def broadcast_room_update(room)
