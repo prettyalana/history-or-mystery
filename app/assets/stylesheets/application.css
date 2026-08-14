@@ -96,7 +96,7 @@ input {
   letter-spacing: 0.15rem;
 }
 
-.card-title {
+.card-question, .card-title {
   display: flex;
   flex-direction: column;
   text-align: center;
