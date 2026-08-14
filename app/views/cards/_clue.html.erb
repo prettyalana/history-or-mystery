@@ -1,11 +1,11 @@
 <div class="clue">
   <% if viewer == room.guesser_player %>
-    <p class="clue-text">
+    <h1 class="clue-text">
       <% if room.clue_text.present? %>
         <%= room.clue_text %>
       <% else %>
         Waiting for the drawer...
       <% end %>
-    </p>
+    </h1>
   <% end %>
 </div>

@@ -61,6 +61,7 @@ group :development do
   gem "pry-rails"
   gem "rails_db"
   gem "rails-erd"
+  gem "ruby-graphviz"
   gem "rufo"
   gem "specs_to_readme"
   gem "web_git"

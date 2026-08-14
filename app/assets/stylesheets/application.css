@@ -20,11 +20,11 @@
   font-size: clamp(3rem, 8vw, 100px);
 }
 
-.game-title:hover{
+input[type="submit"]:hover, .game-title:hover{
   text-shadow: 0 0 10px #fbfcfc;
 }
 
-h1, p {
+h1, h2, p {
   text-align: center;
 }
 
@@ -38,7 +38,7 @@ h1, p {
   align-items: center;
 }
 
-.background-video {
+.game-logo, .background-video {
   position: fixed;
   top: 0;
   left: 0;
@@ -58,10 +58,15 @@ h1, p {
   height: 100vh;
 }
 
-input {
+form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
-  height: 3rem;
+  height: 2rem;
+  gap: 0.5rem;
 }
+
 
 .card-container {
   width: min(90%, 42rem);
@@ -69,7 +74,7 @@ input {
 }
 
 .card {
-  width: 100%;
+  width: 80%;
   min-height: 28rem;
   box-sizing: border-box;
   overflow: hidden;
@@ -80,6 +85,7 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1.25rem;
 }
 
 .card:hover {
@@ -113,6 +119,27 @@ input {
 
 .card-text {
   margin: 0;
-  line-height: 1.7;
   text-align: center;
+}
+
+.form-wrapper 
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.create-room
+{
+  width: 100%;
+}
+
+.game-room {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }

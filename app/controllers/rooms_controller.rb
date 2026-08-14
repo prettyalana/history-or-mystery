@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1 or /rooms/1.json
   def show
     # If the game is done clear browser cookies
-    if @room.round_status == "finished" || @room.round_status == "forfeited"
+    if @room.round_status == "finished" || @room.round_status == "forfeited" || @room.round_status == "won"
       cookies.delete(:auth_token)
     end
   end
@@ -90,15 +90,20 @@ class RoomsController < ApplicationController
 
   def resolve_round
     if params[:outcome] == "won"
-      flash[:notice] = "You win!"
-      @room.update(
-        round_status: "won",
-      )
+      flash[:notice] = "You won this round!"
       player_score = @room.guesser_player.score += 1
       @room.guesser_player.update(
         score: player_score,
       )
-      game_play
+      if @room.round_number >= 3
+        flash[:notice] = "You win! Game over."
+        @room.update(
+          round_status: "won",
+        )
+      else
+        flash[:notice] = "You win!"
+        game_play
+      end
     elsif params[:outcome] == "forfeit"
       flash[:notice] = "Game over"
       @room.update(

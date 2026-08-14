@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def show
     @active_room = Current.player&.room
-    if @active_room && (@active_room.round_status == "finished" || @active_room.round_status == "forfeited")
+    if @active_room && (@active_room.round_status == "finished" || @active_room.round_status == "forfeited" || @active_room.round_status == "won")
       cookies.delete(:auth_token)
       @active_room = nil
     end
