@@ -8,6 +8,14 @@
     <h1 class="card-text">
       Fact: <%= room.current_card.fact %>
     </h1>
+    <% if room.current_card.incorrect_answers.present? %>
+      <h2 class="answer-title">Incorrect answers:</h2>
+      <ul class="incorrect-answers">
+        <% room.current_card.incorrect_answers.each do |answer| %>
+          <li><strong><%= answer %></strong></li>
+        <% end %>
+      </ul>
+    <% end %>
     <h2 class="card-title">
       Correct answer: <%= room.current_card.title %>
     </h2>

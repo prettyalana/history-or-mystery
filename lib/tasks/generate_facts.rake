@@ -23,6 +23,9 @@ task({ generate_facts: :environment }) do
       category: Nokogiri::HTML.fragment(card["category"]).text,
       title: Nokogiri::HTML.fragment(card["correct_answer"]).text,
       fact: Nokogiri::HTML.fragment(card["question"]).text,
+      incorrect_answers: card["incorrect_answers"].map do |answer|
+        Nokogiri::HTML.fragment(answer).text
+      end,
     )
   end
   p "Created #{Card.count} cards."
