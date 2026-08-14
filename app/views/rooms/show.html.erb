@@ -1,6 +1,5 @@
 <%= turbo_stream_from "room_#{@room.code}_seat_#{Current.player.seat}" %>
 
-<p style="color: green"><%= notice %></p>
 <div id="room-content">
   <%= render "rooms/gameplay", room: @room, viewer: Current.player %>
 </div>

@@ -1,8 +1,10 @@
 <% if room.players.count < 2 %>
   <h1> Room code: <%= room.code %> </h1>
-<% elsif room.players.count == 2 && room.round_status.blank? %>
-  <%= form_with url: start_round_path(room), method: :post do %>
-    <button>Start game</button>
+<% elsif room.players.count == 2 && room.round_status.blank?%>
+  <% if viewer.seat == "a" %>
+    <%= form_with url: start_round_path(room), method: :post do %>
+      <button>Start game</button>
+    <% end %>
   <% end %>
 <% elsif room.round_status == "active" %>
   <% if notice %>

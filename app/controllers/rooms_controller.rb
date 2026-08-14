@@ -53,10 +53,13 @@ class RoomsController < ApplicationController
   def start_round
     flash[:notice] = "Game started"
 
-    game_play
-
-    broadcast_room_update(@room)
-    redirect_to @room
+    if Current.player.seat == "a"
+      game_play
+      broadcast_room_update(@room)
+      redirect_to @room
+    else
+      redirect_to @room, alert: "Only the room's creator can start the game"
+    end
   end
 
   def request_clue
@@ -134,7 +137,7 @@ class RoomsController < ApplicationController
       drawer_player: drawer_player,
       guesser_player: guesser_player,
       current_card_id: random_card.id,
-      used_card_ids: @room.used_card_ids + [random_card.id],
+      used_card_ids: @room.used_card_ids + [ random_card.id ],
       round_number: @room.round_number + 1,
       round_started_at: Time.current,
       round_status: "active",
