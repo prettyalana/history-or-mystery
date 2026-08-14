@@ -16,7 +16,7 @@
 ## How to Play
 One player (the host) creates a room and shares the room code with the other player. Each round, one player is the **drawer** and the other is the **guesser**:
 
-1. The drawer is shown a fact and its answer (e.g. fact: *"TThe last moon landing was in 1972"* → answer: *"Apollo 17 Mission"*).
+1. The drawer is shown a fact and its answer (e.g. fact: *"The last moon landing was in 1972"* → answer: *"Apollo 17 Mission"*).
 2. The guesser asks to be "clued in," which reveals a text box to the drawer.
 3. The drawer types a one-word clue (no giving away the answer directly) and submits it.
 4. The guesser sees the clue and tries to guess out loud. The drawer marks the round **Correct** or the guesser can **Forfeit**.
