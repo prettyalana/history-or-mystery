@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-<a href="https://homelessresourceindex.onrender.com]">History or Mystery?</a>
+<a href="https://history-or-mystery.onrender.com">History or Mystery?</a>
   </br>
 </h1>
 
