@@ -36,7 +36,7 @@
   <%= link_to "Main menu", root_path %>
 <% elsif room.round_status == "finished" || room.round_status == "forfeited" %>
   <h2 class="card-question">
-    The correct answer was: <%= room.current_card.fact %>
+    The question was: <%= room.current_card.fact %>
   </h2>
   <h2 class="card-title">
     The correct answer was: <%= room.current_card.title %>
