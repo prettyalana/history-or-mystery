@@ -29,6 +29,7 @@
           <% end %>
         <% end %>
         <%= button_to "Correct!", resolve_round_path(room), class: "player-button", method: :post, params: { outcome: "won" } %>
+        <%= button_to "Incorrect", resolve_round_path(room), class: "player-button", method: :post, params: { outcome: "incorrect" } %>
       </div>
     <% elsif viewer == room.guesser_player %>
       <div class="guesser-actions">

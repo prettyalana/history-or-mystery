@@ -1,5 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: %i[ show start_round request_clue submit_clue resolve_round ]
+  skip_before_action :authenticate, only: [ :create, :join ]
   # GET /rooms/1 or /rooms/1.json
   def show
     # If the game is done clear browser cookies
@@ -89,7 +90,7 @@ class RoomsController < ApplicationController
   end
 
   def resolve_round
-    if params[:outcome] == "won"
+    if params[:outcome] == "won" && Current.player == @room.drawer_player
       flash[:notice] = "You won this round!"
       player_score = @room.guesser_player.score += 1
       @room.guesser_player.update(
@@ -104,11 +105,17 @@ class RoomsController < ApplicationController
         flash[:notice] = "You win!"
         game_play
       end
-    elsif params[:outcome] == "forfeit"
-      flash[:notice] = "Game over"
-      @room.update(
-        round_status: "forfeited",
-      )
+    elsif (params[:outcome] == "forfeit" && Current.player == @room.guesser_player) || (params[:outcome] == "incorrect" && Current.player == @room.drawer_player)
+      flash[:notice] = "You lost this round"
+      if @room.round_number >= 3
+        flash[:notice] = "Game over."
+        @room.update(
+          round_status: "forfeited",
+        )
+      else
+        flash[:notice] = params[:outcome] == "forfeit" ? "You forfeited" : "Incorrect"
+        game_play
+      end
     end
     broadcast_room_update(@room)
     redirect_to @room
@@ -142,7 +149,7 @@ class RoomsController < ApplicationController
       drawer_player: drawer_player,
       guesser_player: guesser_player,
       current_card_id: random_card.id,
-      used_card_ids: @room.used_card_ids + [ random_card.id ],
+      used_card_ids: @room.used_card_ids +  [ random_card.id ],
       round_number: @room.round_number + 1,
       round_started_at: Time.current,
       round_status: "active",

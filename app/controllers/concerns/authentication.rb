@@ -12,7 +12,7 @@ module Authentication
     if authenticated_player = Player.find_by(token: cookies.encrypted[:auth_token])
       Current.player = authenticated_player
     else
-      # redirects
+      redirect_to root_path, alert: "Invalid code"
     end
   end
 end

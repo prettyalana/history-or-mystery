@@ -19,7 +19,7 @@ One player (the host) creates a room and shares the room code with the other pla
 1. The drawer is shown a fact and its answer (e.g. fact: *"The last moon landing was in 1972"* → answer: *"Apollo 17 Mission"*).
 2. The guesser asks to be "clued in," which reveals a text box to the drawer.
 3. The drawer types a one-word clue (no giving away the answer directly) and submits it.
-4. The guesser sees the clue and tries to guess out loud. The drawer marks the round **Correct** or the guesser can **Forfeit**.
+4. The guesser sees the clue and tries to guess out loud. The drawer marks the round **Correct** or **Incorrect**, and the guesser can **Forfeit**.
 5. Seats swap drawer/guesser each round. The game runs for 3 rounds, then ends.
 
 ## Gameplay
@@ -73,7 +73,7 @@ Players are anonymous: joining or creating a room issues a signed, `httponly` co
 
 ### The core design decision: per-seat broadcasting
 
-The guesser must never be able to see the fact, even by inspecting the page source or the WebSocket frames. A single shared Turbo Stream per room would leak the fact to both players' browsers, relying on the view to *hide* it rather than never *send* it. Instead, every state change broadcasts twice — once per seat, to two separate streams — and each stream is rendered with that player's own view of the room:
+The guesser must never be able to see the fact, even by inspecting the page source or the WebSocket frames. A single shared Turbo Stream per room would leak the fact to both players' browsers, relying on the view to *hide* it rather than never *send* it. Instead, every state change broadcasts twice, once per seat, to two separate streams, and each stream is rendered with that player's own view of the room:
 
 ```mermaid
 sequenceDiagram
@@ -91,13 +91,13 @@ sequenceDiagram
     Note over Cable: Guesser's browser only ever<br/>subscribes to room_CODE_seat_b
 ```
 
-The fact simply never reaches the guesser's browser — it isn't rendered into HTML that gets sent to them, so there's nothing to leak client-side. This meant broadcast-context views can't rely on `@room` or `Current.player` (those only exist inside a real HTTP request); every broadcast passes `room` and `viewer` explicitly through the controller and the whole partial chain.
+The fact simply never reaches the guesser's browser because it isn't rendered into HTML that gets sent to them, so there's nothing to leak client-side. This means broadcast-context views can't rely on `@room` or `Current.player` (those only exist inside a real HTTP request); every broadcast passes `room` and `viewer` explicitly through the controller and the whole partial chain.
 
 ## Tech stack
 
 - **Rails 8.1**, Ruby 4.0.6
 - **PostgreSQL** (Neon), used for both the primary database and Solid Cable's message store
-- **Action Cable + Turbo Streams** for real-time updates, no custom JS — Hotwire only
+- **Action Cable + Turbo Streams** for real-time updates
 - **Solid Cable** (DB-backed Action Cable adapter — no separate Redis dependency)
 - **OpenTDB** (Open Trivia Database) as the source of facts, seeded via a rake task
 - **Render** for hosting (free-tier web service), deployed from `main` via GitHub Actions
