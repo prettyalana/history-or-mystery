@@ -7,8 +7,8 @@
     <h1> Room code: <%= room.code %> </h1>
     <h2>Waiting for the second player to join...</h2>
   <% elsif room.players.count == 2 && room.round_status.blank?%>
+    <h1 class="game-title">History or Mystery?</h1>
     <% if viewer.seat == "a" %>
-      <h1 class="game-title">History or Mystery?</h1>
       <%= form_with url: start_round_path(room), method: :post do %>
         <button>Start game</button>
       <% end %>
@@ -45,7 +45,7 @@
     <% end %>
   <% elsif room.round_status == "finished" || room.round_status == "forfeited" || room.round_status == "won" %>
     <div class="game-status-wrapper">
-      <% if room.round_status == "won" %>
+      <% if viewer == room.winner_player %>
         <div class="win-wrapper">
           <h1 class="card-title">You won! 🎉</h1>
         </div>
@@ -53,6 +53,8 @@
         <div class="forfeit-wrapper">
           <h1 class="card-title">Game Over</h1>
         </div>
+      <% end %>
+      <% if viewer == room.guesser_player%>
         <h2 class="card-question">
           The question was: <%= room.current_card.fact %>
         </h2>

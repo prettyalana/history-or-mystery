@@ -91,29 +91,31 @@ class RoomsController < ApplicationController
 
   def resolve_round
     if params[:outcome] == "won" && Current.player == @room.drawer_player
-      flash[:notice] = "You won this round!"
       player_score = @room.guesser_player.score += 1
       @room.guesser_player.update(
         score: player_score,
       )
       if @room.round_number >= 3
-        flash[:notice] = "You win! Game over."
+        winner = determine_winner
         @room.update(
           round_status: "won",
+          winner_player: winner,
         )
       else
-        flash[:notice] = "You win!"
         game_play
       end
     elsif (params[:outcome] == "forfeit" && Current.player == @room.guesser_player) || (params[:outcome] == "incorrect" && Current.player == @room.drawer_player)
-      flash[:notice] = "You lost this round"
+      player_score = @room.drawer_player.score += 1
+      @room.drawer_player.update(
+        score: player_score,
+      )
       if @room.round_number >= 3
-        flash[:notice] = "Game over."
+        winner = determine_winner
         @room.update(
           round_status: "forfeited",
+          winner_player: winner,
         )
       else
-        flash[:notice] = params[:outcome] == "forfeit" ? "You forfeited" : "Incorrect"
         game_play
       end
     end
@@ -149,13 +151,23 @@ class RoomsController < ApplicationController
       drawer_player: drawer_player,
       guesser_player: guesser_player,
       current_card_id: random_card.id,
-      used_card_ids: @room.used_card_ids +  [ random_card.id ],
+      used_card_ids: @room.used_card_ids + [ random_card.id ],
       round_number: @room.round_number + 1,
       round_started_at: Time.current,
       round_status: "active",
       clue_text: nil,
       clue_revealed: false,
     )
+  end
+
+  def determine_winner
+    if @room.guesser_player.score > @room.drawer_player.score
+      winner = @room.guesser_player
+    elsif @room.drawer_player.score > @room.guesser_player.score
+      winner = @room.drawer_player
+    elsif @room.guesser_player.score == @room.drawer_player.score
+      # Tied and game just ends displaying the correct answer with the link that redirects to the main menu
+    end
   end
 
   def broadcast_room_update(room)

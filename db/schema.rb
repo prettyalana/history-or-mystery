@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_14_163407) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_012303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,10 +50,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_163407) do
     t.string "status"
     t.datetime "updated_at", null: false
     t.integer "used_card_ids", default: [], array: true
+    t.bigint "winner_player_id"
     t.index ["code"], name: "index_rooms_on_code", unique: true
     t.index ["current_card_id"], name: "index_rooms_on_current_card_id"
     t.index ["drawer_player_id"], name: "index_rooms_on_drawer_player_id"
     t.index ["guesser_player_id"], name: "index_rooms_on_guesser_player_id"
+    t.index ["winner_player_id"], name: "index_rooms_on_winner_player_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -70,4 +72,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_163407) do
   add_foreign_key "rooms", "cards", column: "current_card_id"
   add_foreign_key "rooms", "players", column: "drawer_player_id", on_delete: :nullify
   add_foreign_key "rooms", "players", column: "guesser_player_id", on_delete: :nullify
+  add_foreign_key "rooms", "players", column: "winner_player_id", on_delete: :nullify
 end
