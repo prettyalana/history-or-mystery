@@ -163,10 +163,8 @@ class RoomsController < ApplicationController
   def determine_winner
     if @room.guesser_player.score > @room.drawer_player.score
       winner = @room.guesser_player
-    elsif @room.drawer_player.score > @room.guesser_player.score
+    else
       winner = @room.drawer_player
-    elsif @room.guesser_player.score == @room.drawer_player.score
-      # Tied and game just ends displaying the correct answer with the link that redirects to the main menu
     end
   end
 
