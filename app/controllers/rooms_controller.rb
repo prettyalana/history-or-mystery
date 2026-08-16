@@ -3,10 +3,6 @@ class RoomsController < ApplicationController
   skip_before_action :authenticate, only: [ :create, :join ]
   # GET /rooms/1 or /rooms/1.json
   def show
-    # If the game is done clear browser cookies
-    if @room.round_status == "finished" || @room.round_status == "forfeited" || @room.round_status == "won"
-      cookies.delete(:auth_token)
-    end
   end
 
   # POST /rooms or /rooms.json
@@ -90,6 +86,12 @@ class RoomsController < ApplicationController
   end
 
   def resolve_round
+    if @room.round_status != "active"
+      broadcast_room_update(@room)
+      redirect_to @room, alert: "This game is invalid"
+      return
+    end
+
     if params[:outcome] == "won" && Current.player == @room.drawer_player
       player_score = @room.guesser_player.score += 1
       @room.guesser_player.update(
