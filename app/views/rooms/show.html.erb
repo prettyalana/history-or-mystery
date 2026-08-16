@@ -1,5 +1,7 @@
 <%= turbo_stream_from "room_#{@room.code}_seat_#{Current.player.seat}" %>
 
-<div id="room-content">
-  <%= render "rooms/gameplay", room: @room, viewer: Current.player %>
+<div data-controller="resync">
+  <div id="room-content">
+    <%= render "rooms/gameplay", room: @room, viewer: Current.player %>
+  </div>
 </div>
