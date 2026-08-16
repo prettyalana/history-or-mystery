@@ -24,7 +24,7 @@
       <div class="drawer-actions">
         <% if room.clue_revealed == true && room.clue_text.blank? %>
           <%= form_with url: submit_clue_path(room), method: :post do |f| %>
-            <%= f.text_field :clue, placeholder: "Clue" %>
+            <%= f.text_field :clue, placeholder: "Clue", data: { turbo_permanent: true } %>
             <%= f.submit "Reveal clue", class: "player-button" %>
           <% end %>
         <% end %>

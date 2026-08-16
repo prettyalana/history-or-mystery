@@ -12,7 +12,7 @@ import { Controller } from "@hotwired/stimulus"
 // to react to. The interval below catches that case by resyncing on a
 // fixed schedule regardless of visibility.
 export default class extends Controller {
-  static RESYNC_INTERVAL_MS = 25000
+  static RESYNC_INTERVAL_MS = 10000
 
   connect() {
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
