@@ -9,6 +9,7 @@ task({ generate_facts: :environment }) do
   starting = Time.now
 
   if Rails.env.development?
+    Room.destroy_all
     Card.destroy_all
     p "Database wiped"
   end

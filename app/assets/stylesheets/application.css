@@ -20,11 +20,14 @@
   font-size: clamp(3rem, 8vw, 100px);
 }
 
-input[type="submit"]:hover, .game-title:hover{
+input[type="submit"]:hover,
+.game-title:hover {
   text-shadow: 0 0 10px #fbfcfc;
 }
 
-h1, h2, p {
+h1,
+h2,
+p {
   text-align: center;
 }
 
@@ -38,7 +41,8 @@ h1, h2, p {
   align-items: center;
 }
 
-.game-logo, .background-video {
+.game-logo,
+.background-video {
   position: fixed;
   top: 0;
   left: 0;
@@ -67,13 +71,13 @@ form {
   gap: 0.5rem;
 }
 
-
 .card-container {
   width: min(90%, 42rem);
   margin: 2rem auto;
 }
 
-.game-status-wrapper, .card {
+.game-status-wrapper,
+.card {
   width: 80%;
   min-height: 28rem;
   box-sizing: border-box;
@@ -103,7 +107,8 @@ form {
   letter-spacing: 0.15rem;
 }
 
-.card-question, .card-title {
+.card-question,
+.card-title {
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -123,8 +128,7 @@ form {
   text-align: center;
 }
 
-.form-wrapper 
-{
+.form-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -132,8 +136,7 @@ form {
   gap: 1.25rem;
 }
 
-.create-room
-{
+.create-room {
   width: 100%;
 }
 
@@ -142,22 +145,58 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 ul {
   margin: 0;
 }
 
-.drawer-actions, .guesser-actions {
+.drawer-actions,
+.guesser-actions {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  width: 80%
+  width: 80%;
+}
+
+.drawer-actions form {
+  height: auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.drawer-actions form input[type="text"] {
+  width: 80%;
+  height: 2rem;
+  padding: 0.5rem;
 }
 
 .player-button {
   width: 80%;
   height: 3rem;
   padding: 0.5rem;
+}
+
+@media (max-width: 37.5rem), (max-height: 31.25rem) {
+  .card-title,
+  .card-text,
+  .card-category,
+  .answer-title,
+  .clue-text {
+    font-size: larger;
+  }
+
+  li {
+    font-size: large;
+  }
+
+  .game-status-wrapper,
+  .card {
+    min-height: 16rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
 }
